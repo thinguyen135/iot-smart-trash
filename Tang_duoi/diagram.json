@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "author": "văn chiến",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-breadboard-half", "id": "bb1", "top": -12.6, "left": 281.2, "attrs": {} },
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-servo",
+      "id": "servoTang1",
+      "top": 314.8,
+      "left": 163.2,
+      "attrs": { "horn": "double" }
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "servoTang2",
+      "top": 458.8,
+      "left": 384,
+      "attrs": { "horn": "double" }
+    },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "cam_bien_huu_co",
+      "top": -27.3,
+      "left": 763.9,
+      "attrs": { "distance": "30" }
+    },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "cam_bien_nhua",
+      "top": 174.3,
+      "left": 763.9,
+      "attrs": { "distance": "30" }
+    },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "cam_bien_giay",
+      "top": 337.5,
+      "left": 773.5,
+      "attrs": { "distance": "30" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:GND.1", "bb1:tn.1", "black", [ "h-100.61", "v-172.8", "h411.2" ] ],
+    [ "cam_bien_huu_co:VCC", "bb1:tp.9", "red", [ "v19.2", "h-414.4" ] ],
+    [ "cam_bien_huu_co:GND", "bb1:tn.10", "black", [ "v9.6", "h-434.8" ] ],
+    [ "cam_bien_giay:VCC", "bb1:tp.11", "red", [ "v19.2", "h-385.6" ] ],
+    [ "cam_bien_giay:GND", "bb1:tn.12", "black", [ "v9.6", "h-406" ] ],
+    [ "cam_bien_nhua:VCC", "bb1:tp.14", "red", [ "v9.6", "h-356.8" ] ],
+    [ "cam_bien_nhua:GND", "bb1:tn.15", "black", [ "h0" ] ],
+    [ "servoTang1:GND", "bb1:tn.20", "black", [ "h-19.2", "v-48", "h401.6" ] ],
+    [ "servoTang1:V+", "bb1:tp.19", "red", [ "h-28.8", "v-67.1", "h401.6" ] ],
+    [ "servoTang2:GND", "bb1:tn.22", "black", [ "h-9.6", "v-96", "h200" ] ],
+    [ "servoTang2:V+", "bb1:tp.21", "red", [ "h-28.8", "v-124.7", "h209.6" ] ],
+    [ "cam_bien_huu_co:TRIG", "esp:27", "blue", [ "v67.2", "h-1066", "v-76.5" ] ],
+    [ "cam_bien_huu_co:ECHO", "esp:15", "cyan", [ "v38.4", "h-711.2", "v67.2" ] ],
+    [ "cam_bien_nhua:TRIG", "esp:18", "green", [ "v19.2", "h-720.4", "v-182.4" ] ],
+    [ "cam_bien_nhua:ECHO", "esp:19", "yellow", [ "v28.8", "h-720.8", "v-201.6" ] ],
+    [ "cam_bien_giay:TRIG", "esp:32", "gray", [ "v28.8", "h-1056.4", "v-268.7" ] ],
+    [ "cam_bien_giay:ECHO", "esp:33", "cyan", [ "v38.4", "h-1047.2", "v-265.9" ] ],
+    [ "servoTang1:PWM", "esp:13", "limegreen", [ "h-316.8", "v-294.3" ] ],
+    [ "servoTang2:PWM", "esp:14", "magenta", [ "h-556.8", "v-457.8" ] ],
+    [ "esp:VN", "bb1:tp.1", "red", [ "h-43.01", "v-67.2" ] ]
+  ],
+  "dependencies": {}
+}

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Trash Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">IoT Smart Trash</p>
+          <h1>Giám sát thùng rác thông minh</h1>
+        </div>
+        <div id="connectionStatus" class="connection is-pending">Đang kết nối Firebase</div>
+      </header>
+
+      <section class="summary">
+        <article class="signal">
+          <span class="label">Trạng thái PIR</span>
+          <strong id="pirState">Chưa có dữ liệu</strong>
+        </article>
+        <article class="signal">
+          <span class="label">Loại rác mới nhất</span>
+          <strong id="latestCategory">Chưa phân loại</strong>
+        </article>
+        <article class="signal">
+          <span class="label">Thời gian nhận ảnh</span>
+          <strong id="latestTime">Chưa có dữ liệu</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <div class="bins-panel">
+          <div class="section-heading">
+            <p class="eyebrow">Dung lượng</p>
+            <h2>Ba thùng phân loại</h2>
+          </div>
+
+          <div class="bins-grid">
+            <article class="bin-card" data-bin="huuco">
+              <div class="bin-head">
+                <div>
+                  <span class="bin-type">Hữu cơ</span>
+                  <h3>Thùng H</h3>
+                </div>
+                <span id="huucoStatus" class="badge">NOT_FULL</span>
+              </div>
+              <div class="meter" aria-label="Phần trăm thùng hữu cơ">
+                <div id="huucoBar" class="meter-fill"></div>
+              </div>
+              <div class="bin-values">
+                <strong id="huucoPercent">0%</strong>
+                <span id="huucoDistance">30 cm</span>
+              </div>
+              <p id="huucoUpdated" class="updated">Chưa có dữ liệu</p>
+            </article>
+
+            <article class="bin-card" data-bin="nhua">
+              <div class="bin-head">
+                <div>
+                  <span class="bin-type">Nhựa / vô cơ</span>
+                  <h3>Thùng N</h3>
+                </div>
+                <span id="nhuaStatus" class="badge">NOT_FULL</span>
+              </div>
+              <div class="meter" aria-label="Phần trăm thùng nhựa">
+                <div id="nhuaBar" class="meter-fill"></div>
+              </div>
+              <div class="bin-values">
+                <strong id="nhuaPercent">0%</strong>
+                <span id="nhuaDistance">30 cm</span>
+              </div>
+              <p id="nhuaUpdated" class="updated">Chưa có dữ liệu</p>
+            </article>
+
+            <article class="bin-card" data-bin="giay">
+              <div class="bin-head">
+                <div>
+                  <span class="bin-type">Giấy / carton</span>
+                  <h3>Thùng G</h3>
+                </div>
+                <span id="giayStatus" class="badge">NOT_FULL</span>
+              </div>
+              <div class="meter" aria-label="Phần trăm thùng giấy">
+                <div id="giayBar" class="meter-fill"></div>
+              </div>
+              <div class="bin-values">
+                <strong id="giayPercent">0%</strong>
+                <span id="giayDistance">30 cm</span>
+              </div>
+              <p id="giayUpdated" class="updated">Chưa có dữ liệu</p>
+            </article>
+          </div>
+        </div>
+
+        <aside class="image-panel">
+          <div class="section-heading">
+            <p class="eyebrow">AI Camera</p>
+            <h2>Ảnh rác mới nhất</h2>
+          </div>
+          <figure class="trash-photo">
+            <div id="photoPlaceholder" class="photo-placeholder"></div>
+            <img id="trashImage" alt="Ảnh rác mới nhất" hidden />
+          </figure>
+          <div class="classification">
+            <span id="categoryCode" class="code">-</span>
+            <div>
+              <span class="label">Gemini phân loại</span>
+              <strong id="categoryLabel">Chưa có kết quả</strong>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "configurations": [
+    {
+      "name": "PlatformIO ESP32",
+      "includePath": [
+        "${workspaceFolder}/Tang_tren/src",
+        "${workspaceFolder}/Tang_duoi/src",
+        "${workspaceFolder}/Tang_tren/.pio/libdeps/esp32dev/**",
+        "${workspaceFolder}/Tang_duoi/.pio/libdeps/esp32dev/**",
+        "C:/Users/Ha/.platformio/packages/framework-arduinoespressif32/**",
+        "C:/Users/Ha/.platformio/packages/toolchain-xtensa-esp32/**"
+      ],
+      "browse": {
+        "path": [
+          "${workspaceFolder}/Tang_tren/src",
+          "${workspaceFolder}/Tang_duoi/src",
+          "${workspaceFolder}/Tang_tren/.pio/libdeps/esp32dev",
+          "${workspaceFolder}/Tang_duoi/.pio/libdeps/esp32dev",
+          "C:/Users/Ha/.platformio/packages/framework-arduinoespressif32",
+          "C:/Users/Ha/.platformio/packages/toolchain-xtensa-esp32"
+        ],
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "defines": [
+        "ARDUINO=10808",
+        "ARDUINO_ARCH_ESP32",
+        "ESP32",
+        "F_CPU=240000000L"
+      ],
+      "compilerPath": "C:/Users/Ha/.platformio/packages/toolchain-xtensa-esp32/bin/xtensa-esp32-elf-g++.exe",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "gcc-x64"
+    }
+  ],
+  "version": 4
+}

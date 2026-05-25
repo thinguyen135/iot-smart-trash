@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "author": "văn chiến",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-breadboard-half", "id": "bb1", "top": 16.2, "left": 444.4, "attrs": {} },
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-pir-motion-sensor", "id": "pir1", "top": 52, "left": 242.22, "attrs": {} },
+    {
+      "type": "wokwi-servo",
+      "id": "servoNap",
+      "top": -242,
+      "left": 624,
+      "attrs": { "horn": "single" }
+    },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "cam_bien_nap",
+      "top": -219.3,
+      "left": 255.1,
+      "attrs": { "distance": "40" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "pir1:OUT", "esp:27", "green", [ "v96", "h-316.94", "v-115.2" ] ],
+    [ "cam_bien_nap:VCC", "bb1:tp.6", "red", [ "v38.4", "h65.6" ] ],
+    [ "cam_bien_nap:GND", "bb1:tn.7", "black", [ "v19.2", "h45.2" ] ],
+    [ "servoNap:GND", "bb1:tn.16", "black", [ "h0" ] ],
+    [ "servoNap:V+", "bb1:tp.17", "red", [ "h0" ] ],
+    [ "cam_bien_nap:TRIG", "esp:25", "purple", [ "v28.8", "h-461.2", "v156.5" ] ],
+    [ "cam_bien_nap:ECHO", "esp:26", "yellow", [ "v48", "h-490.4", "v147" ] ],
+    [ "servoNap:PWM", "esp:12", "orange", [ "h-19.2", "v125", "h-758.4", "v154.3" ] ],
+    [ "esp:GND.1", "bb1:tn.3", "black", [ "h-23.81", "v57.6", "h0", "v19.2", "h451.2" ] ],
+    [ "esp:VN", "bb1:tp.4", "red", [ "h-43.01", "v-76.8", "h556.8" ] ],
+    [ "pir1:GND", "bb1:tn.2", "black", [ "h191.74", "v-105.5" ] ],
+    [ "pir1:VCC", "bb1:tp.1", "red", [ "h-48", "v-134.4", "h248" ] ]
+  ],
+  "dependencies": {}
+}

@@ -1,0 +1,10 @@
+D:\HCMUTE\Lập trình window\ck_window\Picture_and_AI\send_picture_to_cloud_iot\send_picture_to_cloud_iot\obj\Debug\send_picture_to_cloud_iot.csproj.AssemblyReference.cache
+D:\HCMUTE\Lập trình window\ck_window\Picture_and_AI\send_picture_to_cloud_iot\send_picture_to_cloud_iot\obj\Debug\send_picture_to_cloud_iot.csproj.CoreCompileInputs.cache
+D:\HCMUTE\Lập trình window\ck_window\Picture_and_AI\send_picture_to_cloud_iot\send_picture_to_cloud_iot\bin\Debug\send_picture_to_cloud_iot.exe.config
+D:\HCMUTE\Lập trình window\ck_window\Picture_and_AI\send_picture_to_cloud_iot\send_picture_to_cloud_iot\bin\Debug\send_picture_to_cloud_iot.exe
+D:\HCMUTE\Lập trình window\ck_window\Picture_and_AI\send_picture_to_cloud_iot\send_picture_to_cloud_iot\bin\Debug\send_picture_to_cloud_iot.pdb
+D:\HCMUTE\Lập trình window\ck_window\Picture_and_AI\send_picture_to_cloud_iot\send_picture_to_cloud_iot\obj\Debug\send_picture_to_cloud_iot.exe
+D:\HCMUTE\Lập trình window\ck_window\Picture_and_AI\send_picture_to_cloud_iot\send_picture_to_cloud_iot\obj\Debug\send_picture_to_cloud_iot.pdb
+D:\HCMUTE\Lập trình window\ck_window\Picture_and_AI\send_picture_to_cloud_iot\send_picture_to_cloud_iot\bin\Debug_fallback\send_picture_to_cloud_iot.exe.config
+D:\HCMUTE\Lập trình window\ck_window\Picture_and_AI\send_picture_to_cloud_iot\send_picture_to_cloud_iot\bin\Debug_fallback\send_picture_to_cloud_iot.exe
+D:\HCMUTE\Lập trình window\ck_window\Picture_and_AI\send_picture_to_cloud_iot\send_picture_to_cloud_iot\bin\Debug_fallback\send_picture_to_cloud_iot.pdb
