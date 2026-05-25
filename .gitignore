@@ -1,0 +1,35 @@
+.vs/
+.vscode/
+bin/
+obj/
+*.suo
+*.user
+*.cache
+*.pdb
+*.obj
+*.exe
+*.log
+*.db
+*.vsidx
+
+# Visual Studio
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.sln.bin
+
+# Build results
+[Dd]ebug*/
+[Rr]elease*/
+x64/
+x86/
+
+# Package folders
+packages/
+
+# Node
+node_modules/
+
+# Misc
+*.DS_Store

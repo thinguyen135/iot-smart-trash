@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Smart Trash Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -11,7 +14,7 @@
       <header class="topbar">
         <div>
           <p class="eyebrow">IoT Smart Trash</p>
-          <h1>Giám sát thùng rác thông minh</h1>
+          <h1>Giám sát thùng rác<br><span class="accent">thông minh</span></h1>
         </div>
         <div id="connectionStatus" class="connection is-pending">Đang kết nối Firebase</div>
       </header>
@@ -39,6 +42,8 @@
           </div>
 
           <div class="bins-grid">
+
+            <!-- THÙNG HỮU CƠ -->
             <article class="bin-card" data-bin="huuco">
               <div class="bin-head">
                 <div>
@@ -47,16 +52,73 @@
                 </div>
                 <span id="huucoStatus" class="badge">NOT_FULL</span>
               </div>
-              <div class="meter" aria-label="Phần trăm thùng hữu cơ">
-                <div id="huucoBar" class="meter-fill"></div>
+
+              <div class="bin-visual-wrap">
+                <svg class="bin-svg" viewBox="0 0 130 175" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <clipPath id="clip-huuco">
+                      <polygon points="16,40 114,40 104,158 26,158"/>
+                    </clipPath>
+                    <linearGradient id="grad-huuco" x1="0" y1="158" x2="0" y2="40" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%"   stop-color="#22c55e"/>
+                      <stop offset="55%"  stop-color="#facc15"/>
+                      <stop offset="100%" stop-color="#ef4444"/>
+                    </linearGradient>
+                    <filter id="shadow-huuco">
+                      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#17211b" flood-opacity="0.15"/>
+                    </filter>
+                  </defs>
+
+                  <!-- Bin fill (animated) -->
+                  <rect id="huucoBar" class="bin-fill-rect"
+                        x="0" y="158" width="130" height="0"
+                        clip-path="url(#clip-huuco)"
+                        fill="url(#grad-huuco)" opacity="0.9"/>
+
+                  <!-- Fill shine overlay -->
+                  <rect class="bin-fill-shine"
+                        x="0" y="158" width="130" height="0"
+                        clip-path="url(#clip-huuco)"
+                        data-sync="huuco"/>
+
+                  <!-- Bin body outline -->
+                  <polygon points="16,40 114,40 104,158 26,158"
+                           fill="rgba(255,255,255,0.25)"
+                           stroke="#8aaa8f" stroke-width="1.8"
+                           filter="url(#shadow-huuco)"/>
+
+                  <!-- Body ribs -->
+                  <line x1="43" y1="43" x2="39" y2="154" stroke="#8aaa8f" stroke-width="1" opacity="0.4"/>
+                  <line x1="65" y1="43" x2="65" y2="154" stroke="#8aaa8f" stroke-width="1" opacity="0.4"/>
+                  <line x1="87" y1="43" x2="91" y2="154" stroke="#8aaa8f" stroke-width="1" opacity="0.4"/>
+
+                  <!-- Lid -->
+                  <rect x="6" y="26" width="118" height="16" rx="5"
+                        fill="#c5ddc8" stroke="#8aaa8f" stroke-width="1.8"/>
+                  <!-- Lid inner bevel -->
+                  <rect x="10" y="29" width="110" height="10" rx="3" fill="rgba(255,255,255,0.35)"/>
+
+                  <!-- Handle base -->
+                  <rect x="46" y="11" width="38" height="17" rx="7"
+                        fill="#b5cdb8" stroke="#8aaa8f" stroke-width="1.8"/>
+                  <!-- Handle hole -->
+                  <rect x="52" y="15" width="26" height="9" rx="4"
+                        fill="rgba(255,255,255,0.45)"/>
+
+                  <!-- Recycling arrows hint (organic) -->
+                  <text x="65" y="105" text-anchor="middle" font-size="26" opacity="0.08" font-family="sans-serif">♻</text>
+                </svg>
+
+                <div class="bin-values">
+                  <strong id="huucoPercent" class="pct-num">0%</strong>
+                  <span id="huucoDistance" class="dist-num">30 cm</span>
+                </div>
               </div>
-              <div class="bin-values">
-                <strong id="huucoPercent">0%</strong>
-                <span id="huucoDistance">30 cm</span>
-              </div>
+
               <p id="huucoUpdated" class="updated">Chưa có dữ liệu</p>
             </article>
 
+            <!-- THÙNG NHỰA -->
             <article class="bin-card" data-bin="nhua">
               <div class="bin-head">
                 <div>
@@ -65,16 +127,57 @@
                 </div>
                 <span id="nhuaStatus" class="badge">NOT_FULL</span>
               </div>
-              <div class="meter" aria-label="Phần trăm thùng nhựa">
-                <div id="nhuaBar" class="meter-fill"></div>
+
+              <div class="bin-visual-wrap">
+                <svg class="bin-svg" viewBox="0 0 130 175" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <clipPath id="clip-nhua">
+                      <polygon points="16,40 114,40 104,158 26,158"/>
+                    </clipPath>
+                    <linearGradient id="grad-nhua" x1="0" y1="158" x2="0" y2="40" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%"   stop-color="#22c55e"/>
+                      <stop offset="55%"  stop-color="#facc15"/>
+                      <stop offset="100%" stop-color="#ef4444"/>
+                    </linearGradient>
+                    <filter id="shadow-nhua">
+                      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#17211b" flood-opacity="0.15"/>
+                    </filter>
+                  </defs>
+                  <rect id="nhuaBar" class="bin-fill-rect"
+                        x="0" y="158" width="130" height="0"
+                        clip-path="url(#clip-nhua)"
+                        fill="url(#grad-nhua)" opacity="0.9"/>
+                  <rect class="bin-fill-shine"
+                        x="0" y="158" width="130" height="0"
+                        clip-path="url(#clip-nhua)"
+                        data-sync="nhua"/>
+                  <polygon points="16,40 114,40 104,158 26,158"
+                           fill="rgba(255,255,255,0.25)"
+                           stroke="#8aaa8f" stroke-width="1.8"
+                           filter="url(#shadow-nhua)"/>
+                  <line x1="43" y1="43" x2="39" y2="154" stroke="#8aaa8f" stroke-width="1" opacity="0.4"/>
+                  <line x1="65" y1="43" x2="65" y2="154" stroke="#8aaa8f" stroke-width="1" opacity="0.4"/>
+                  <line x1="87" y1="43" x2="91" y2="154" stroke="#8aaa8f" stroke-width="1" opacity="0.4"/>
+                  <rect x="6" y="26" width="118" height="16" rx="5"
+                        fill="#c5ddc8" stroke="#8aaa8f" stroke-width="1.8"/>
+                  <rect x="10" y="29" width="110" height="10" rx="3" fill="rgba(255,255,255,0.35)"/>
+                  <rect x="46" y="11" width="38" height="17" rx="7"
+                        fill="#b5cdb8" stroke="#8aaa8f" stroke-width="1.8"/>
+                  <rect x="52" y="15" width="26" height="9" rx="4"
+                        fill="rgba(255,255,255,0.45)"/>
+                  <text x="65" y="105" text-anchor="middle" font-size="26" opacity="0.08" font-family="sans-serif">♻</text>
+                </svg>
+
+                <div class="bin-values">
+                  <strong id="nhuaPercent" class="pct-num">0%</strong>
+                  <span id="nhuaDistance" class="dist-num">30 cm</span>
+                </div>
               </div>
-              <div class="bin-values">
-                <strong id="nhuaPercent">0%</strong>
-                <span id="nhuaDistance">30 cm</span>
-              </div>
+
               <p id="nhuaUpdated" class="updated">Chưa có dữ liệu</p>
             </article>
 
+            <!-- THÙNG GIẤY -->
             <article class="bin-card" data-bin="giay">
               <div class="bin-head">
                 <div>
@@ -83,15 +186,56 @@
                 </div>
                 <span id="giayStatus" class="badge">NOT_FULL</span>
               </div>
-              <div class="meter" aria-label="Phần trăm thùng giấy">
-                <div id="giayBar" class="meter-fill"></div>
+
+              <div class="bin-visual-wrap">
+                <svg class="bin-svg" viewBox="0 0 130 175" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <clipPath id="clip-giay">
+                      <polygon points="16,40 114,40 104,158 26,158"/>
+                    </clipPath>
+                    <linearGradient id="grad-giay" x1="0" y1="158" x2="0" y2="40" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%"   stop-color="#22c55e"/>
+                      <stop offset="55%"  stop-color="#facc15"/>
+                      <stop offset="100%" stop-color="#ef4444"/>
+                    </linearGradient>
+                    <filter id="shadow-giay">
+                      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#17211b" flood-opacity="0.15"/>
+                    </filter>
+                  </defs>
+                  <rect id="giayBar" class="bin-fill-rect"
+                        x="0" y="158" width="130" height="0"
+                        clip-path="url(#clip-giay)"
+                        fill="url(#grad-giay)" opacity="0.9"/>
+                  <rect class="bin-fill-shine"
+                        x="0" y="158" width="130" height="0"
+                        clip-path="url(#clip-giay)"
+                        data-sync="giay"/>
+                  <polygon points="16,40 114,40 104,158 26,158"
+                           fill="rgba(255,255,255,0.25)"
+                           stroke="#8aaa8f" stroke-width="1.8"
+                           filter="url(#shadow-giay)"/>
+                  <line x1="43" y1="43" x2="39" y2="154" stroke="#8aaa8f" stroke-width="1" opacity="0.4"/>
+                  <line x1="65" y1="43" x2="65" y2="154" stroke="#8aaa8f" stroke-width="1" opacity="0.4"/>
+                  <line x1="87" y1="43" x2="91" y2="154" stroke="#8aaa8f" stroke-width="1" opacity="0.4"/>
+                  <rect x="6" y="26" width="118" height="16" rx="5"
+                        fill="#c5ddc8" stroke="#8aaa8f" stroke-width="1.8"/>
+                  <rect x="10" y="29" width="110" height="10" rx="3" fill="rgba(255,255,255,0.35)"/>
+                  <rect x="46" y="11" width="38" height="17" rx="7"
+                        fill="#b5cdb8" stroke="#8aaa8f" stroke-width="1.8"/>
+                  <rect x="52" y="15" width="26" height="9" rx="4"
+                        fill="rgba(255,255,255,0.45)"/>
+                  <text x="65" y="105" text-anchor="middle" font-size="26" opacity="0.08" font-family="sans-serif">♻</text>
+                </svg>
+
+                <div class="bin-values">
+                  <strong id="giayPercent" class="pct-num">0%</strong>
+                  <span id="giayDistance" class="dist-num">30 cm</span>
+                </div>
               </div>
-              <div class="bin-values">
-                <strong id="giayPercent">0%</strong>
-                <span id="giayDistance">30 cm</span>
-              </div>
+
               <p id="giayUpdated" class="updated">Chưa có dữ liệu</p>
             </article>
+
           </div>
         </div>
 
@@ -101,7 +245,14 @@
             <h2>Ảnh rác mới nhất</h2>
           </div>
           <figure class="trash-photo">
-            <div id="photoPlaceholder" class="photo-placeholder"></div>
+            <div id="photoPlaceholder" class="photo-placeholder">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="20" r="10" stroke="#9db89f" stroke-width="2"/>
+                <circle cx="24" cy="20" r="4" fill="#9db89f" opacity="0.5"/>
+                <path d="M8 40 C8 32 40 32 40 40" stroke="#9db89f" stroke-width="2" fill="none" stroke-linecap="round"/>
+              </svg>
+              <span>Chờ ảnh mới</span>
+            </div>
             <img id="trashImage" alt="Ảnh rác mới nhất" hidden />
           </figure>
           <div class="classification">
@@ -113,7 +264,6 @@
           </div>
         </aside>
       </section>
-
     </main>
 
     <script type="module" src="app.js"></script>
