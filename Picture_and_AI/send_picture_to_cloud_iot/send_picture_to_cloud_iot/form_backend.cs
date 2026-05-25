@@ -26,7 +26,7 @@ namespace send_picture_to_cloud_iot
             "iot-smart-trash-212d9.appspot.com"
         };
         private const string FirebaseApiKey = "AIzaSyBkU6zS_GhZ-ziCHGKec5XlbNF1SC8PkVQ";
-        private const string GeminiApiKey = "AIzaSyC53DXgQwg9ZbCUqZPMqbHV5Ht7Naq6qZA";
+        private const string GeminiApiKey = "";
         private const int GeminiMaxRetries = 4;
 
         private readonly HttpClient httpClient = new HttpClient();
