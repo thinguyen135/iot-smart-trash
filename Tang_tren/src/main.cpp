@@ -68,13 +68,6 @@ String getFirebase(String path) {
     payload = http.getString();
     payload.replace("\"", "");
   }
-  Serial.print("[Firebase GET] ");
-  Serial.print(path);
-  Serial.print(" -> HTTP ");
-  Serial.print(httpCode);
-  Serial.print(", value=");
-  Serial.println(payload);
-  http.end();
   return payload;
 }
 
@@ -99,11 +92,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("\n--- LOOP TANG TREN ---");
   int khoangCachNap = doKhoangCach(TRIG_NAP, ECHO_NAP);
-  Serial.print("Khoang cach nap: ");
-  Serial.print(khoangCachNap);
-  Serial.println(" cm");
 
   if (khoangCachNap > 0 && khoangCachNap < LID_OPEN_DISTANCE_CM && !lidAlreadyOpened) {
     Serial.println("Moi bo rac vao!");
@@ -124,41 +113,32 @@ void loop() {
   int pirState = digitalRead(sensorPin);
   Serial.print("PIR state: ");
   Serial.println(pirState);
+  delay(2000);
 
   if (pirState == 1 && WiFi.status() == WL_CONNECTED && millis() - lastPirTriggerMs > PIR_TRIGGER_COOLDOWN_MS) {
     Serial.println("\n[ESP32 Tang tren] Co rac, gui obstacle = 1 len Firebase...");
     putFirebase("/sensors/pir/obstacle.json", "1");
     lastPirTriggerMs = millis();
 
-    String trashCategory = "";
-    Serial.print("[ESP32 Tang tren] Dang doi AI phan loai");
 
-    int cnt = 0;
-    bool receivedResult = true;
-    while (trashCategory == "" || trashCategory == "null") {
-      delay(1000);
+    delay(5000);
+    Serial.println("[ESP32 Tang tren] Dang cho tang_duoi xu ly xong...");
+      
+    // Vòng lặp chờ tang_duoi set obstacle về 0
+    String obstacleStatus = "1";
+    
+    // Chỉ cần kiểm tra obstacleStatus khác "0" (và khác rỗng phòng trường hợp lỗi mạng)
+    while (obstacleStatus != "0" && obstacleStatus != "") {
+      delay(1000); // Đợi 1 giây trước mỗi lần hỏi lại Firebase để tránh quá tải
       Serial.print(".");
-      cnt++;
-
-      if (cnt > 10) {
-        putFirebase("/sensors/pir/obstacle.json", "0");
-        Serial.println("\nKhong nhan duoc phan hoi tu AI");
-        receivedResult = false;
-        break;
-      }
-
-      trashCategory = getFirebase("/trash_type/category.json");
+      obstacleStatus = getFirebase("/sensors/pir/obstacle.json");
     }
-
-    if (receivedResult) {
-      Serial.println("\n[ESP32 Tang tren] AI da phan loai xong!");
-      Serial.print("[ESP32 Tang tren] Loai rac: ");
-      Serial.println(trashCategory);
-      delay(5000);
-    }
-  } else if (pirState == 1) {
-    Serial.println("PIR dang HIGH nhung dang trong thoi gian cooldown, khong gui obstacle lap lai.");
+      
+    Serial.println("\n[ESP32 Tang tren] Tang duoi da xu ly xong. He thong san sang cho lan tiep theo!");
+      
+    // Cập nhật lại mốc thời gian cooldown sau khi mọi thứ đã hoàn tất
+    // Giúp tránh việc PIR bị nhận nhầm thao tác cơ khí của tầng dưới thành rác
+    lastPirTriggerMs = millis(); 
   }
-
   delay(1000);
 }
