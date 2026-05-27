@@ -77,12 +77,6 @@ String getFromFirebase(String path) {
     payload = http.getString();
     payload.replace("\"", "");
   }
-  Serial.print("[Firebase GET] ");
-  Serial.print(path);
-  Serial.print(" -> HTTP ");
-  Serial.print(httpCode);
-  Serial.print(", value=");
-  Serial.println(payload);
   http.end();
   return payload;
 }
@@ -175,20 +169,56 @@ void phanLoaiGiay() {
 
 void loop() {
   Serial.println("\n--- LOOP TANG DUOI ---");
-  String trashCategory = getFromFirebase("/trash_type/category.json");
+  
+  // 1. Kiểm tra xem có lệnh phân loại từ tầng trên / AI không
+  String obstacleState = getFromFirebase("/sensors/pir/obstacle.json");
+  
+  if (obstacleState == "1") {
+    String trashCategory = ""; 
+    Serial.print("[ESP32 Tang duoi] Dang doi AI phan loai");
 
-  if (trashCategory == "H" || trashCategory == "N" || trashCategory == "G") {
-    Serial.println("\n[NHAN LENH] AI tra ve ket qua: " + trashCategory);
+    int cnt = 0;
+    bool receivedResult = true;
+    
+    // 2. Chờ AI trả kết quả (tối đa 10 giây)
+    while (trashCategory == "" || trashCategory == "null") {
+      delay(1000);
+      Serial.print(".");
+      cnt++;
 
-    if (trashCategory == "H") phanLoaiHuuCo();
-    else if (trashCategory == "N") phanLoaiNhua();
-    else if (trashCategory == "G") phanLoaiGiay();
+      if (cnt > 10) {
+        sendToFirebase("/sensors/pir/obstacle.json", "0");
+        Serial.println("\n[LỖI] Khong nhan duoc phan hoi tu AI (Timeout). Huy bo!");
+        receivedResult = false;
+        break;
+      }
 
-    sendToFirebase("/sensors/pir/obstacle.json", "0");
-    sendToFirebase("/trash_type/category.json", "\"\"");
-    Serial.println("[ESP32] Da reset obstacle/category, san sang luot tiep theo.\n");
+      trashCategory = getFromFirebase("/trash_type/category.json");
+    }
+
+    // 3. Tiến hành phân loại nếu lấy được kết quả
+    if (receivedResult) {
+      Serial.println(); // Xuống dòng cho đẹp log
+      if (trashCategory == "H" || trashCategory == "N" || trashCategory == "G") {
+        Serial.println("[NHAN LENH] AI tra ve ket qua: " + trashCategory);
+
+        // Chạy servo
+        if (trashCategory == "H") phanLoaiHuuCo();
+        else if (trashCategory == "N") phanLoaiNhua();
+        else if (trashCategory == "G") phanLoaiGiay();
+
+        // Xong việc thì reset Firebase để tầng trên biết
+        sendToFirebase("/sensors/pir/obstacle.json", "0");
+        sendToFirebase("/trash_type/category.json", "\"\"");
+        Serial.println("[ESP32] Da reset obstacle/category, san sang luot tiep theo.\n");
+      } else {
+        Serial.println("[LỖI] Ma rac khong hop le: " + trashCategory);
+        sendToFirebase("/sensors/pir/obstacle.json", "0"); // Gặp lỗi vẫn phải reset cờ
+      }
+    }
   }
 
+  // 4. Cập nhật dung lượng 3 thùng rác (luôn chạy kể cả khi không có rác rơi)
   int kcHuuCo = doKhoangCach(TRIG_HC_HUUCO, ECHO_HC_HUUCO);
   int kcNhua = doKhoangCach(TRIG_HC_NHUA, ECHO_HC_NHUA);
   int kcGiay = doKhoangCach(TRIG_HC_GIAY, ECHO_HC_GIAY);
@@ -200,10 +230,6 @@ void loop() {
   sendBinState("huuco", kcHuuCo);
   sendBinState("nhua", kcNhua);
   sendBinState("giay", kcGiay);
-
-  sendToFirebase("/sensors/hc-sr04/status_huuco.json", kcHuuCo <= FULL_DISTANCE_CM ? "\"FULL\"" : "\"NOT_FULL\"");
-  sendToFirebase("/sensors/hc-sr04/status_nhua.json", kcNhua <= FULL_DISTANCE_CM ? "\"FULL\"" : "\"NOT_FULL\"");
-  sendToFirebase("/sensors/hc-sr04/status_giay.json", kcGiay <= FULL_DISTANCE_CM ? "\"FULL\"" : "\"NOT_FULL\"");
 
   delay(1000);
 }
