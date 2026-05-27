@@ -179,6 +179,7 @@ class TrashClassifierApp(tk.Tk):
         self._selected_image_path = ""
         self._photo_ref = None            # giữ tham chiếu ảnh để tránh bị GC
 
+        self._last_obstacle_state = "0"
         self._build_ui()
         self._start_firebase_poll()
 
@@ -251,8 +252,19 @@ class TrashClassifierApp(tk.Tk):
         try:
             response = firebase_get("/sensors/pir/obstacle.json", self._active_url_holder)
             self._set_status("Firebase đã kết nối")
-            if response and response.strip() == "1":
+
+            # Lấy giá trị obstacle hiện tại trên Firebase (mặc định là "0" nếu trống)
+            current_state = response.strip() if response else "0"
+
+            # Kịch bản 1: Mới phát hiện rác (chuyển từ 0 -> 1)
+            if current_state == "1" and self._last_obstacle_state != "1":
+                self._last_obstacle_state = "1" # Đánh dấu là đã nhận tín hiệu 1
                 self.after(0, self._trigger_selection_and_classification)
+
+            # Kịch bản 2: Hệ thống tang_duoi đã dọn xong rác (chuyển về 0)
+            elif current_state == "0":
+                self._last_obstacle_state = "0" # Reset lại cờ để sẵn sàng cho lần sau
+
         except Exception as ex:
             self._set_status("Chưa kết nối RTDB, vẫn có thể chọn ảnh thủ công.")
             print("Lỗi Firebase:", ex)
@@ -260,12 +272,6 @@ class TrashClassifierApp(tk.Tk):
     def _trigger_selection_and_classification(self):
         messagebox.showinfo("Phát hiện rác", "Phát hiện rác mới. Hãy chọn ảnh để AI phân loại.")
         selected = self._pick_image_and_classify()
-        if not selected:
-            threading.Thread(
-                target=lambda: self._safe_put("/sensors/pir/obstacle.json", 0,
-                                              "Đã hủy chọn ảnh, obstacle đã reset về 0."),
-                daemon=True
-            ).start()
 
     def _safe_put(self, path, value, status_text):
         try:
@@ -369,7 +375,6 @@ class TrashClassifierApp(tk.Tk):
         }
         firebase_put("/trash_type/category.json", category, self._active_url_holder)
         firebase_put("/trash_events/current.json", event, self._active_url_holder)
-        firebase_put(f"/trash_events/history/{created_at}.json", event, self._active_url_holder)
 
 
 # ──────────────────────────────────────────────
